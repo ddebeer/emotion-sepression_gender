@@ -1,0 +1,87 @@
+---
+title: "Emotion Suppression and Gender - descriptives"
+author: "Dries Debeer, Laura Sels and Elise Kalokerinos"
+format: pdf
+editor: 
+  markdown: 
+    wrap: 72
+echo: false
+---
+
+```{r}
+#| label: load packages
+#| include: false
+library(dplyr, quietly = TRUE, warn.conflicts = FALSE)
+```
+
+## Descriptives
+
+```{r}
+#| tbl-cap: Sample Discriptives
+descr <- readRDS("../../Data/descriptives/descr0.RDS")
+
+
+
+raw <- descr |> select(study, n, other, female, male, m_age, sd_age, min_age, max_age) |> 
+  arrange(study)
+
+
+other <- sum(raw$other)
+N <- sum(raw$n)
+other_pct <- other/N * 100
+male_pct <- sum(raw$male) / N * 100
+female_pct <- sum(raw$female) / N * 100
+
+knitr::kable(raw, digits = 2)
+```
+
+Participants who indicated `other` as their gender were not included in the analyses. In total `r other` participants were excluded (`r round(other_pct, 1)`%).
+The percentage of female was (`r round(female_pct, 1)`%), and of male (`r round(male_pct, 1)`%)
+
+
+```{r}
+#| tbl-cap: Sample Included in Analysis
+descr <- readRDS("../../Data/descriptives/descr.RDS")
+
+raw <- descr |> select(study, n, female, male, m_age, sd_age, min_age, max_age) |> 
+  arrange(study) |> mutate(pct_female = female / n * 100)
+
+male_pct <- sum(raw$male) / sum(raw$n) * 100
+female_pct <- sum(raw$female) / sum(raw$n) * 100
+
+knitr::kable(raw, digits = 1)
+
+```
+
+
+
+
+## Reliabitlies
+
+### Negative Affect
+
+```{r}
+#| tbl-cap: Scale Reliabilities for Negative Affect (Omega Between and Within)
+omega <- readRDS("../../Data/descriptives/omega.RDS")
+o_within <- omega |> filter(label == "omega_within") |> pull(est) |> summary()
+o_between <- omega |> filter(label == "omega_between") |> pull(est) |> summary()
+
+
+omega |> arrange(label, study) |> knitr::kable(digits = 3)
+```
+
+`omega between` ranged from `r round(o_between[1], 2)` to `r round(o_between[6], 2)`, whereas `omega within` ranged from `r round(o_within[1], 2)` to `r round(o_within[6], 2)`
+
+
+### Emotion Suppression (trait)
+
+```{r}
+#| tbl-cap: Scale Reliabilities for Emotion Suppersion (ERQ or RESS)
+alpha <- readRDS("../../Data/descriptives/alpha.RDS")
+alpha |> arrange(study) |> 
+  select(study, raw_alpha, scale) |> 
+  knitr::kable(digits = 2)
+
+```
+
+The reliability of the Emotion Supression trait scales (ERQ and RESS) ranged from `r round(min(alpha$raw_alpha), 2)` to `r round(max(alpha$raw_alpha), 2)`
