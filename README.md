@@ -6,6 +6,14 @@ This repository contains R-code, data and results related to the study: "Men do 
 The preregistration form can be found on OSF via this link: <add link>
 
 
+## Raw Data
+
+The raw data from each study included in our analysis is part of the EMOTE data base (Kalokerinos, et al., 2026). Although the raw .csv files for each individual study are not included on this github repository, they can be obtained by sending a request to the maintainers of the EMOTE database. The following link can be used to request data: <https://emotedatabase.com/requestid/LX5RQSRPFX>
+
+To reproduce our results, store the raw data in the `Data-raw` folder within this project, and run the code step by step.
+
+
+
 ## R-code
 
 In the folder `R` the following folders can be found: 
@@ -21,6 +29,7 @@ Each folder contains the code and some results for a specific step in the data a
 
 
 ### 01_proprocess-data
+
 
 The folder `01_preprocess-data` contains several R-scripts that were used to preprocess the data. Because each included study used different variable names, coding schemes, ... separate preprocessing files were created for each study. The study specific preprocessing R script start with `99_`. For each study, the scripts results in saving three data files (with .RDS extension): 
 
@@ -60,3 +69,10 @@ The resulting files are saved in `Data/beep-level-data/`, `Data/person-level-dat
 ### 02_descriptives
 
 The 02_descriptives folder contains a quarto file (`descriptives.qmd`) in which tables with descriptive information about the studies are created. The information from the tables is used in Table 1 in the manuscript. In addition, the folder contains the rendered .pdf result: `descriptives.pdf`. 
+
+
+
+
+## References
+
+Kalokerinos, E. K., Russo-Batterham, D., Grewal, K. K., Moeck, E. K., Wilson, E., Smith, I., Greenaway, K. H., Garrett, P., Shrestha, K. M., Kuppens, P., & Koval, P. (2026). The EMOTE Database: An open, searchable database of experience sampling data mapping everyday emotion processes. PsyArXiv. <https://osf.io/preprints/psyarxiv/h7kxd_v1/> 

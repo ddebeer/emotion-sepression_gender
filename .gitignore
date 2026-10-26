@@ -51,5 +51,6 @@ po/*~
 rsconnect/
 
 # data files
-Data-raw/
-Data/
+Data-raw/*
+Data/*
+!Data-raw/Codebook.csv
