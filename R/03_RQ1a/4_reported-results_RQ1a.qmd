@@ -1,0 +1,103 @@
+---
+title: "Emotion Suppression and Gender - Results RQ1a"
+author: "Dries Debeer, Laura Sels and Elise Kalokerinos"
+format: pdf
+editor: 
+  markdown: 
+    wrap: 72
+echo: false
+---
+
+
+## Model comparison
+
+To test Research Question 1a, three modeling approaches were executed. The approaches differed with respect to which fixed effects were included in the model (both for the location and the dispersion parameter).
+
+All approaches make use of a multi-level beta-regression approach. Because beta-regression cannot deal with exact 0 or exact 1 values, the [0-1] scale was transformed to a ]0-1[ scale. More specifically a [0.0005 – 0.9995] scale. The used transformation is: (0.0005 + x) / 1.001.
+
+The linear regressor for the location and dispersion parameter were the same within a model, but different across approaches.
+
+The three approaches are: 
+
+1. fixed effects for both `age`, `negative affect`, and `female` (a gender based dummy variable). Hence, the gender differences in emotion suppression are tested, while controlling for age differences and differences in the average reported negative affect (both within and between studies) 
+
+2. fixed effects for both `age` and `female` (a gender based dummy variable). Hence, the gender differences in emotion suppression are tested, while controlling for age differences (both within and between studies) 
+
+3. fixed effects for both `negative affect` and `female` (a gender based dummy variable). Hence, the gender differences in emotion suppression are tested, while controlling for differences in the average reported negative affect (both within and between studies) 
+
+In each approach, to find the optimal random effects structure, all possible random effects structures using the level-1 fixed effects within that approach, were fitted to the data. Model fit criteria are reported in the table below. Only models that converged with default settings are reported. 
+
+The random effects structures that resulted in converging fit across the approaches were: 
+
+A. Only a random intercept for the location model, no random effects for the dispersion model
+
+B. Only a random intercept for the location model and only a random intercept for the dispersion model
+
+C. A random intercept and a random slope for `female` for the location model, no random effects for the dispersion model
+
+D. A random intercept and a random slope for `negative affect` for the location model, no random effects for the dispersion model
+
+E. A random intercept and a random slope for `negative affect` for the location model and only a random intercept for the dispersion model
+
+```{r}
+#| label: load packages
+#| include: false
+library(dplyr, quietly = TRUE, warn.conflicts = FALSE)
+```
+
+```{r}
+#| tbl-cap: Model Comparison for Research Question 1a
+RQ1a <- readRDS("R/03_RQ1a/reported_models/anova_erq_b.RDS")
+RQ1a_no_neg_aff <- readRDS("R/03_RQ1a/reported_models/anova_erq_b_no_neg_aff.RDS")
+RQ1a_no_age <- readRDS("R/03_RQ1a/reported_models/anova_erq_b_no_age.RDS")
+
+mod_comparison_table <- rbind(
+  cbind(Age = "Yes", 'Negative affect' = "Yes", 'Random Structure' = LETTERS[1:4], RQ1a[, 2:3]),
+  cbind(Age = "Yes", 'Negative affect' = "No", 'Random Structure' = LETTERS[1:3], RQ1a_no_neg_aff[1:3, 2:3]),
+  cbind(Age = "No", 'Negative affect' = "Yes", 'Random Structure' = LETTERS[c(1, 3:5)], RQ1a_no_age[, 2:3])
+)
+
+mod_comparison_table <- cbind(Model = seq_len(nrow(mod_comparison_table)), mod_comparison_table)
+
+knitr::kable(mod_comparison_table, row.names = FALSE, digits = 1)
+```
+
+
+The best fitting model is the model with random structure B form the third approach. This model includes fixed effects for `age` and `negative affect`, and has only a random intercept for the location model and only a random intercept for the dispersion model.
+
+
+
+## Testing the effects
+
+Within each approach, the best fitting model (i.e., the lowest AIC) is used to test the expected marginal gender difference for reported trait emotion suppression. First, a traditional two-sided null-hypothesis test (NHT) is computed as a mean to quantify the evidence that there is a gender difference. Second, an equivalence test approach: Two-One-Sided-Tests (TOST), is used as a mean to quantify the evidence that there is no gender difference. the equivalence bounds around zero, we defined the smallest effect size of interest as the average of the reported gender differences in suppression scores as reported by Gross and John (2023) and Rogier and colleagues (2019).
+
+The table gives the estimated gender difference, the standard error of the difference and the 95% confidence interval. In addition, the $p$-values of the NHT and TOST are given.
+
+```{r}
+#| tbl-cap: Estimated Expected Marginal Differences and Corresponding $p$-values for the NHT and TOST
+RQ1a <- readRDS("R/03_RQ1a/reported_models/TOST_erq_b.RDS")
+RQ1a_no_neg_aff <- readRDS("R/03_RQ1a/reported_models/TOST_erq_b_no_neg_aff.RDS")
+RQ1a_no_age <- readRDS("R/03_RQ1a/reported_models/TOST_erq_b_no_age.RDS")
+
+out <- data.frame(
+  Age = c("Yes", "Yes", "NO"),
+  'Negative affect' = c("Yes", "No", "Yes"), 
+  rbind(RQ1a, RQ1a_no_neg_aff, RQ1a_no_age))
+
+out$CI <- paste("[", round(out$CI_lower, 3), ";", round(out$CI_upper, 3), "]", sep = "")
+
+out$nht_p <- ifelse(out$p < 0.0001, "< .0001", out$p)
+
+out$tost_p <- ifelse(out$tost_p > 0.999, .999, out$tost_p)
+
+out <- out[, c("Age", "Negative.affect", "male_female", "se", "CI", "nht_p", "tost_p")]
+
+out <- cbind(Model = c(2, 6, 11), out)
+
+knitr::kable(out, col.names = c("Model", "Age", "Negative Affect", "Gender (m - f)", "SE", "95% CI", "p-value", "TOST p-values"), digits = 3)
+```
+
+For each of the three approaches, the best fitting model indicates that there is evidence for gender difference in the reported emotion suppression, and no evidence for gender equivalence.
+
+
+

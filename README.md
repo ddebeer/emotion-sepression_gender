@@ -40,11 +40,11 @@ The folder `01_preprocess-data` contains several R-scripts that were used to pre
 - a file with descriptes and computed scale statistics (Crohnbach's alpha, ...),  saved in the folder `Data/descriptives/`
 
 
-In addition to `99_` the two main R scripts are: 
+In addition to `99_` the main R scripts are: 
 
 - `1_preprocess.R`
 
-- `2_combine-data.R`
+- `2_combine-person-level-data.R`
 
 
 #### `1_preprocess.R`
@@ -52,23 +52,18 @@ In addition to `99_` the two main R scripts are:
 The R script `1_preprocess.R` can be seen as a convenience wrapper that executes the study specific preprocessing R scripts (`99_`) sequentially.
 
 
-#### `2_combine-data.R`
+#### `2_combine-person-level-data.R`
 
-The R script `2_combine-data.R` combines and then saves as one file:
+The R script `2_combine-person-level-data.R` combines all the person level data from the included EMOTE studies. Participants reporting a gender different from `male` or `female` are excluded form the data.
 
-- the beep-level data from all studies
+After combining the data from the different studies, the for the covariates `age`, `female` (a dummy coded indicator for gender), `negative_affect` (i.e., for each person the average of his or her momentary negative affect responses) are decomposed into a level 1 (person level) and and a level 2 (study level) component. More specifically, person deviations from the study average are computed, resulting in `age_pd`, `female_pd`, and `neg_aff_pd`, where the `_pd` suffix stands for "person deviation". In addition, for each covariate, the study deviation from the overall mean is computed, resulting in `age_sd`, `female_sd`, and `neg_aff_sd`, where the suffix `_sd` stands for "study deviation".
 
-- the person-level data from all studies
-
-- descriptive information from all studies
-
-
-The resulting files are saved in `Data/beep-level-data/`, `Data/person-level-data/`, and `Data/descriptives/`, respectively.
+The resulting person level data is stored as `Data/person-level-data.RDS1`.
 
 
 ### 02_descriptives
 
-The 02_descriptives folder contains a quarto file (`descriptives.qmd`) in which tables with descriptive information about the studies are created. The information from the tables is used in Table 1 in the manuscript. In addition, the folder contains the rendered .pdf result: `descriptives.pdf`. 
+The 02_descriptives folder contains a and R-script (`01_combine-descriptives.R`) in which the descriptive statitistics of each study are combined. In addition, the quarto file (`02_descriptives.qmd`) creates tables with descriptive information about the studiesd. The information from these tables is used in Table 1 in the manuscript. Finally, the folder contains the rendered .pdf result: `02_descriptives.pdf`. 
 
 
 

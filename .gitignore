@@ -54,3 +54,5 @@ rsconnect/
 Data-raw/*
 Data/*
 !Data-raw/Codebook.csv
+
+/.quarto/
