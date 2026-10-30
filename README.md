@@ -3,7 +3,7 @@
 
 This repository contains R-code, data and results related to the study: "Men do not suppress emotions more than women in everyday life: Evidence from large scale experience-sampling data". 
 
-The preregistration form can be found on OSF via this link: <add link>
+The preregistration form can be found on OSF via this link: https://osf.io/84uqe
 
 
 ## Raw Data
@@ -22,7 +22,9 @@ In the folder `R` the following folders can be found:
 
 - `02_descriptives`
 
-- `03_RQ1`
+- `03_RQ1a`
+
+- `04_RQ1b`
 
 
 Each folder contains the code and some results for a specific step in the data analysis.
@@ -63,10 +65,16 @@ The resulting person level data is stored as `Data/person-level-data.RDS1`.
 
 ### 02_descriptives
 
-The 02_descriptives folder contains a and R-script (`01_combine-descriptives.R`) in which the descriptive statitistics of each study are combined. In addition, the quarto file (`02_descriptives.qmd`) creates tables with descriptive information about the studiesd. The information from these tables is used in Table 1 in the manuscript. Finally, the folder contains the rendered .pdf result: `02_descriptives.pdf`. 
+The 02_descriptives folder contains a and R-script (`01_combine-descriptives.R`) in which the descriptive statitistics of each study are combined. In addition, the quarto file (`02_descriptives.qmd`) creates tables with descriptive information about the studies. The information from these tables is used in Table 1 in the manuscript. Finally, the folder contains the rendered .pdf result: `02_descriptives.pdf`. 
 
 
+### 03_RQ1a
 
+This folder contains the code and the results for the analyses related to research question RQ1a. The results are found in [this .pdf document](https://github.com/ddebeer/emotion-sepression_gender/blob/main/R/03_RQ1a/4_reported-results_RQ1a.pdf)
+
+### 04_RQ1b
+
+This folder contains the code and the results for the analyses related to research question RQ1b. The results are found in [this .pdf document](https://github.com/ddebeer/emotion-sepression_gender/blob/main/R/04_RQ1b/4_reported-results_RQ1b.pdf)
 
 ## References
 
